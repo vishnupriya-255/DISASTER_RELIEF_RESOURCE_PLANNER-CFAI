@@ -1,0 +1,110 @@
+# CO1 - Intelligent Agent Based Disaster Information & Needs Assessment
+
+from dataclasses import dataclass
+
+# =========================
+# STATE REPRESENTATION
+# =========================
+@dataclass
+class AreaState:
+    area_id: str
+    name: str
+    people: int
+    severity: int
+    food_need: int
+    water_need: int
+    medicine_need: int
+
+
+# =========================
+# FUNCTION
+# =========================
+def get_data():
+
+    print("DISASTER MANAGEMENT SYSTEM\n")
+
+    # PEAS MODEL
+    print("PEAS MODEL")
+    print("Performance Measure : Efficient Resource Distribution")
+    print("Environment         : Disaster Affected Areas")
+    print("Actuators           : Allocate Resources")
+    print("Sensors             : User Input (Disaster + Area Data)\n")
+
+    # Disaster Info
+    disaster_type = input("Enter Disaster Type (Flood/Earthquake/etc): ")
+
+    print("\n--- Disaster Information Collected ---")
+    print("Disaster Type:", disaster_type)
+
+    areas = []
+    visited = set()
+
+    n = int(input("\nEnter number of affected areas: "))
+
+    for i in range(n):
+        print(f"\n--- Enter Details for Area {i+1} ---")
+
+        area_id = input("Enter Area ID: ")
+        name = input("Enter Area Name: ")
+        people = int(input("Number of People Affected: "))
+        severity = int(input("Severity (1-Low, 2-Medium, 3-High): "))
+
+        print("\nEnter Needs Assessment")
+
+        # Food
+        food_choice = input("Is Food Required? (yes/no): ").lower()
+        if food_choice == "yes":
+            food = int(input("Enter Food Quantity: "))
+        else:
+            food = 0
+
+        # Water
+        water_choice = input("Is Water Required? (yes/no): ").lower()
+        if water_choice == "yes":
+            water = int(input("Enter Water Quantity: "))
+        else:
+            water = 0
+
+        # Medicine
+        medicine_choice = input("Is Medicine Required? (yes/no): ").lower()
+        if medicine_choice == "yes":
+            medicine = int(input("Enter Medicine Quantity: "))
+        else:
+            medicine = 0
+
+        # Create state
+        state = AreaState(area_id, name, people, severity, food, water, medicine)
+
+        areas.append(state)
+        visited.add(area_id)
+
+        print("\nState Added Successfully!\n")
+
+    # Display
+    print("\n===== ALL AREA STATES =====\n")
+
+    for area in areas:
+        print(area)
+
+    print("\nVISITED AREA IDs:", visited)
+
+    # Reasoning
+    print("\nAGENT REASONING PROCESS\n")
+
+    for area in areas:
+        print("Checking Area:", area.name)
+
+        if area.severity == 3 or area.people > 5000:
+            print("Result : High Priority\n")
+        elif area.severity == 2:
+            print("Result : Medium Priority\n")
+        else:
+            print("Result : Low Priority\n")
+
+    return disaster_type, areas
+
+
+# =========================
+# CALL FUNCTION (IMPORTANT)
+# =========================
+disaster_type, areas = get_data()
