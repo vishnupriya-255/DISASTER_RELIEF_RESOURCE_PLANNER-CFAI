@@ -1,0 +1,71 @@
+# CO2 - Priority Calculation using Greedy Search
+
+# =========================
+# PRIORITY FUNCTION
+# =========================
+def calculate_priority(area, disaster):
+
+    print(f"\nCalculating Priority for {area.name}")
+
+    severity_score = 0.4 * area.severity
+    people_score = 0.3 * (area.people / 100)
+    needs_score = 0.3 * ((area.food_need + area.water_need + area.medicine_need) / 100)
+
+    print("Severity Contribution :", severity_score)
+    print("People Contribution   :", people_score)
+    print("Needs Contribution    :", needs_score)
+
+    total_score = severity_score + people_score + needs_score
+
+    if disaster.lower() == "flood":
+        print("Extra weight for Water (Flood case)")
+        total_score += area.water_need * 0.01
+
+    elif disaster.lower() == "earthquake":
+        print("Extra weight for Medicine (Earthquake case)")
+        total_score += area.medicine_need * 0.01
+
+    final_score = round(total_score, 2)
+
+    print("Final Score :", final_score)
+
+    return final_score
+
+
+# =========================
+# GREEDY SEARCH FUNCTION
+# =========================
+def greedy_search(areas, disaster_type):
+
+    print("\nCO2 - GREEDY SEARCH (PRIORITY ORDER)\n")
+
+    if not areas:
+        print("No areas available")
+        return []
+
+    priority_list = []
+
+    for area in areas:
+        score = calculate_priority(area, disaster_type)
+        priority_list.append((area, score))
+
+    priority_list.sort(key=lambda x: x[1], reverse=True)
+
+    print("\n===== FINAL PRIORITY ORDER =====\n")
+
+    for i, (area, score) in enumerate(priority_list, 1):
+        print(f"{i}. {area.name} → Score: {score}")
+
+    print("\nGREEDY SELECTION EXPLANATION\n")
+
+    for area, score in priority_list:
+        print(f"{area.name} selected based on higher priority")
+
+    sorted_areas = [item[0] for item in priority_list]
+
+    return sorted_areas
+
+try:
+    sorted_areas = greedy_search(areas, disaster_type)
+except:
+    print("ERROR: Please run CO1 cell first to generate data!")
