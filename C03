@@ -1,0 +1,69 @@
+# CO3 - Resource Allocation using Constraints
+
+# =========================
+# RESOURCE ALLOCATION FUNCTION
+# =========================
+def allocate_resources(sorted_areas):
+
+    print("\n==============================")
+    print("CO3 - RESOURCE ALLOCATION")
+    print("==============================\n")
+
+    # Safety check
+    if 'sorted_areas' not in globals() or not sorted_areas:
+        print("ERROR: No data received from CO2")
+        return
+
+    # Input total available resources
+    total_food = int(input("Enter Total Food Available: "))
+    total_water = int(input("Enter Total Water Available: "))
+    total_medicine = int(input("Enter Total Medicine Available: "))
+
+    print("\n--- Starting Allocation Process ---\n")
+
+    # Allocation process (based on priority order from CO2)
+    for area in sorted_areas:
+
+        print(f"\nAllocating resources to: {area.name}")
+
+        # FOOD allocation
+        if total_food >= area.food_need:
+            food_alloc = area.food_need
+        else:
+            food_alloc = total_food
+        total_food -= food_alloc
+
+        # WATER allocation
+        if total_water >= area.water_need:
+            water_alloc = area.water_need
+        else:
+            water_alloc = total_water
+        total_water -= water_alloc
+
+        # MEDICINE allocation
+        if total_medicine >= area.medicine_need:
+            med_alloc = area.medicine_need
+        else:
+            med_alloc = total_medicine
+        total_medicine -= med_alloc
+
+        # Output result
+        print("Food Allocated     :", food_alloc)
+        print("Water Allocated    :", water_alloc)
+        print("Medicine Allocated :", med_alloc)
+        print("----------------------------------")
+
+    # Remaining resources
+    print("\n==============================")
+    print("FINAL REMAINING RESOURCES")
+    print("==============================")
+    print("Food Left     :", total_food)
+    print("Water Left    :", total_water)
+    print("Medicine Left :", total_medicine)
+
+
+
+try:
+    allocate_resources(sorted_areas)
+except NameError:
+    print("ERROR: Please run CO1 and CO2 first in order")
